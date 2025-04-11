@@ -33,6 +33,6 @@ classDiagram
         +GameResult(string word, double timeTaken)
     }
 
-    Program --> Game : uses
-    Game --> WordProvider : has
-    Game --> GameResult : contains
+    Program *-- Game : creates
+    Game *-- WordProvider : has
+    Game o-- GameResult : contains
