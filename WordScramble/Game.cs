@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.VisualBasic;
 using Spectre.Console;
 
 namespace WordScramble
@@ -16,6 +17,8 @@ namespace WordScramble
         /// A list to store the last 5 game results for the game stats board.
         /// </summary>
         private readonly GameResult[] gameStats;
+
+        private readonly List<string> presentedWords = new List<string>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Game"/> class.
@@ -48,7 +51,7 @@ namespace WordScramble
                 string choice = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
                         .Title("[bold yellow]Word Scramble[/]")
-                        .AddChoices("Start Game", "View Game Stats", "Quit"));
+                        .AddChoices("Start Game", "View Game Stats", "breakdown chart", "Quit"));
 
                 switch (choice)
                 {
@@ -57,6 +60,9 @@ namespace WordScramble
                         break;
                     case "View Game Stats":
                         ShowGameStats();
+                        break;
+                    case "breakdown chart":
+                        ShowBreakdownChart();
                         break;
                     case "Quit":
                         return;
@@ -82,6 +88,7 @@ namespace WordScramble
             /// The randomly chosen word for the current round.
             /// </summary>
             string word = wordProvider.GetRandomWord();
+            presentedWords.Add(word);
 
             /// <summary>
             /// The scrambled version of the word.
@@ -172,6 +179,41 @@ namespace WordScramble
             AnsiConsole.Markup(
                 "\n[bold green]Press Enter to Return to Menu...[/]");
             Console.ReadLine();
+        }
+
+        private void ShowBreakdownChart()
+        {
+            AnsiConsole.Clear();
+            Dictionary<string, int> wordCounts = new Dictionary<string, int>();
+            int totalWords = 0;
+
+            foreach (var word in presentedWords)
+            {
+                if (wordCounts.ContainsKey(word))
+                {
+                    wordCounts[word]++;
+                }
+                else
+                {
+                    wordCounts[word] = 1;
+                }
+                totalWords++;
+            }
+
+            Table table = new Table();
+            table.AddColumn("Word");
+            table.AddColumn("Percentage");
+
+            foreach (var pair in wordCounts)
+            {
+                double percentage = (double)pair.Value / totalWords * 100;
+                table.AddRow(pair.Key, $"{percentage:F2}%");
+            }
+
+            AnsiConsole.Write(table);
+            AnsiConsole.Markup("\n[bold green]Press Enter to Return to Menu...[/]");
+            Console.ReadLine();
+        
         }
     }
 }
