@@ -51,7 +51,7 @@ namespace WordScramble
                 string choice = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
                         .Title("[bold yellow]Word Scramble[/]")
-                        .AddChoices("Start Game", "View Game Stats", "breakdown chart", "Quit"));
+                        .AddChoices("Start Game", "View Game Stats", "Breakdown chart", "Quit"));
 
                 switch (choice)
                 {
@@ -61,7 +61,7 @@ namespace WordScramble
                     case "View Game Stats":
                         ShowGameStats();
                         break;
-                    case "breakdown chart":
+                    case "Breakdown chart":
                         ShowBreakdownChart();
                         break;
                     case "Quit":
