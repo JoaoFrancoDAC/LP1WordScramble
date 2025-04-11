@@ -11,10 +11,12 @@ classDiagram
     class Game {
         -WordProvider wordProvider
         -GameResult[] gameStats
+        -List<string> presentedWords
         +Game()
         +ShowMenu() void
         -StartGame() void
         -ShowGameStats() void
+        -ShowBreakdownChart() void
     }
 
     class WordProvider {
